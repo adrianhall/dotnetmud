@@ -7,19 +7,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D50F164C-FC1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetmud.Web", "src\dotnetmud.Web\dotnetmud.Web.csproj", "{2025CD00-BFF6-4C87-955E-4B1F00F3B178}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{E51F5350-3F3E-48C0-AF0F-AF22B6853C23}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2025CD00-BFF6-4C87-955E-4B1F00F3B178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2025CD00-BFF6-4C87-955E-4B1F00F3B178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2025CD00-BFF6-4C87-955E-4B1F00F3B178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2025CD00-BFF6-4C87-955E-4B1F00F3B178}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2025CD00-BFF6-4C87-955E-4B1F00F3B178} = {D50F164C-FC18-4DC1-9320-528EA5C24A1A}
