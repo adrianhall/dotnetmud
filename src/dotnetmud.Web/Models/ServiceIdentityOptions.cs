@@ -18,6 +18,11 @@ public class ServiceIdentityOptions
     public string? DefaultAdministratorPassword { get; set; }
 
     /// <summary>
+    /// If true, enable lockout processing.
+    /// </summary>
+    public bool EnableLockout { get; set; } = true;
+
+    /// <summary>
     /// The lockout options that can be set.
     /// </summary>
     public LockoutOptions Lockout { get; set; } = new LockoutOptions();

@@ -1,6 +1,14 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using dotnetmud.Web.Database.Models
+@using dotnetmud.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
     ViewBag.BodyClass = "layout--home";
     Layout = "_Layout";
+
+    bool isSignedIn = SignInManager.IsSignedIn(User);
+    bool isAdministrator = User.IsInRole(AppRoles.Administrator);
 }
 
 <div class="homepage">
@@ -16,18 +24,20 @@
                     <li class="nav-item">
                         <a class="nav-link app-title" asp-page="/Home">DotNetMud</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Left1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Left2</a>
-                    </li>
+                    @if(isAdministrator)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Users</a>
+                        </li>
+                    }
+                    @if(isSignedIn)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Play Game</a>
+                        </li>
+                    }
                 </ul>
-                <ul class="me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Right1</a>
-                    </li>
-                </ul>
+                <partial name="_LoginPartial" />
             </nav>
         </div>
     </header>

@@ -33,4 +33,14 @@ public static class IdentityExtensions
         options.RequireNonAlphanumeric = other.RequireNonAlphanumeric;
         options.RequireUppercase = other.RequireUppercase;
     }
+
+    /// <summary>
+    /// Finds a user by either their username or email address.
+    /// </summary>
+    /// <typeparam name="TUser">The type of the user record.</typeparam>
+    /// <param name="userManager">The user manager for ASP.NET Identity</param>
+    /// <param name="username">The username to find.</param>
+    /// <returns>The user record, or null if not found.</returns>
+    public static async Task<TUser?> FindUserAsync<TUser>(this UserManager<TUser> userManager, string username) where TUser : IdentityUser
+        => await userManager.FindByNameAsync(username) ?? await userManager.FindByEmailAsync(username);
 }

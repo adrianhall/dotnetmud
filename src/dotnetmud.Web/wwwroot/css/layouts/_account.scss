@@ -1,0 +1,43 @@
+﻿.layout--account .accountpage {
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: url(../../img/fantasy_background.jpg) no-repeat;
+    background-size: cover;
+
+    > main {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        background: transparent;
+        height: 100%;
+        width: 100%;
+
+        > .wrapper {
+            background: white;
+            border: 1px solid #333;
+            border-radius: 1rem;
+            display: block;
+            padding: 1rem;
+        }
+    }
+
+    > footer {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-basis: content;
+        min-height: 3rem;
+        background: black;
+        color: white;
+    }
+}

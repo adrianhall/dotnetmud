@@ -1,11 +1,29 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@using dotnetmud.Web.Database.Models
+@using dotnetmud.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
 @model IndexModel
+
 @{
     ViewData["Title"] = "Home page";
     Layout = "_HomeLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="wrapper">
+    <div class="panel">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a asp-page="/Game/Index" class="btn btn-primary btn-large mx-2 my-2">
+                Enter the game
+            </a>
+        }
+        else
+        {
+            <a asp-page="/Account/Login" class="btn btn-primary btn-lg mx-2 my-2">
+                Sign in
+            </a>
+        }
+    </div>
 </div>
+

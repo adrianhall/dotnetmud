@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.BodyClass = "layout--account";
+    Layout = "_Layout";
+}
+
+<div class="accountpage">
+    <main>
+        <div class="wrapper">
+            @RenderBody()
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="text-center">
+                Copyright &copy; @DateTimeOffset.Now.Year dotnetmud
+            </div>
+        </div>
+
+    </footer>
+</div>
+
+@section Stylesheets {
+    @RenderSection("Stylesheets", required: false)
+}
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

@@ -60,8 +60,27 @@
 
     > main {
         display: block;
+        height: 100%;
+        width: 100%;
         flex-grow: 1;
         background: transparent;
+
+        > .wrapper {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+
+            > .panel {
+                background: white;
+                border: 1px solid #333;
+                border-radius: 1rem;
+                display: block;
+                padding: 2rem 4rem;
+            }
+        }
     }
 
     > footer {
