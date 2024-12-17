@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.BodyClass = "layout--home";
+    Layout = "_Layout";
+}
+
+<div class="homepage">
+    <header class="bg-dark-subtle">
+        <div class="container">
+            <nav>
+                <ul class="me-auto mb-2 mb-lg-0">
+                    <li class="nav-item app-brand">
+                        <a class="navbar-brand" asp-page="/Home">
+                            <img src="~/img/brand.svg" alt="Logo" width="40" height="40" class="d-inline-block">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link app-title" asp-page="/Home">DotNetMud</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Left1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Left2</a>
+                    </li>
+                </ul>
+                <ul class="me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Right1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Right2</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        <div class="container">
+            <div class="text-center">
+                Copyright &copy; @DateTimeOffset.Now.Year dotnetmud
+            </div>
+        </div>
+
+    </footer>
+</div>
+
+@section Stylesheets {
+    @RenderSection("Stylesheets", required: false)
+}
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
