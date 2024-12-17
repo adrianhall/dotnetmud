@@ -55,7 +55,12 @@ builder.Services.AddRazorPages();
 */
 var app = builder.Build();
 
-await app.InitializeDatabaseAsync();
+using (CancellationTokenSource cts = new(TimeSpan.FromMinutes(5)))
+{
+    using var scope = app.Services.CreateAsyncScope();
+    var dbCreator = scope.ServiceProvider.GetRequiredService<IDatabaseCreator>();
+    await dbCreator.InitializeDatabaseAsync(cts.Token);
+}
 
 /*********************************************************************
 ** HTTP Pipeline

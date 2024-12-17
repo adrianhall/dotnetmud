@@ -1,5 +1,4 @@
-﻿using dotnetmud.Web.Database;
-using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+﻿using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.V8;
 using Microsoft.Extensions.Options;
 
@@ -43,18 +42,5 @@ public static class DotNetMud_StartupExtensions
         configuration.Bind(defaultValue);
         services.AddSingleton(Options.Create(defaultValue));
         return defaultValue;
-    }
-
-    /// <summary>
-    /// Initializes the database within an async scope.
-    /// </summary>
-    /// <param name="app">The application builder.</param>
-    /// <param name="timeoutInMinutes">The timeout in minutes (default: 5 minutes).</param>
-    public static Task InitializeDatabaseAsync(this IApplicationBuilder app, int timeoutInMinutes = 5)
-    {
-        using CancellationTokenSource cts = new(TimeSpan.FromMinutes(timeoutInMinutes));
-        using var scope = app.ApplicationServices.CreateScope();
-        var databaseCreator = scope.ServiceProvider.GetRequiredService<IDatabaseCreator>();
-        return databaseCreator.InitializeDatabaseAsync();
     }
 }
