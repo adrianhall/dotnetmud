@@ -1,0 +1,36 @@
+﻿@page
+@using dotnetmud.Web.Models
+@model ProfileModel
+@{
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Profile</h4>
+</div>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.Username" class="form-control disabled" readonly placeholder="Email address..." />
+        <label asp-for="Input.Username">@Html.DisplayNameFor(m => m.Input.Username)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.Username"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.DisplayName" class="form-control" placeholder="Your name..." />
+        <label asp-for="Input.DisplayName">@Html.DisplayNameFor(m => m.Input.DisplayName)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.DisplayName"></span>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Make changes</button>
+</form>
+<hr />
+<div class="d-flex flex-row justify-content-around w-100 my-2">
+    <a asp-page="/Account/ChangePassword" class="btn btn-warning">Change password</a>
+    @if (!User.IsInRole(AppRoles.Administrator))
+    {
+        <a asp-page="/Account/DeleteAccount" class="btn btn-error">Delete account</a>
+    }
+</div>

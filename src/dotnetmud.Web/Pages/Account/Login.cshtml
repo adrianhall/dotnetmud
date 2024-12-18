@@ -34,8 +34,9 @@
             <a class="small" asp-page="/Account/ForgotPassword">Forgot&nbsp;password?</a>
         </div>
     </div>
-
-    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+    <div class="d-flex flex-row justify-content-around w-100 my-2">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
 </form>
 
 @if (Model.ExternalProviders.Any())
