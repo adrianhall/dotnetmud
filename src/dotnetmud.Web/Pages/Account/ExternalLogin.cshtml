@@ -1,0 +1,34 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Associate your @Model.ProviderDisplayName account.</h4>
+</div>
+<p id="external-login-description" class="text-ifno">
+    You've successfully signed in with <strong>@Model.ProviderDisplayName</strong>.  Please enter an email address
+    and display name for this site below and click the Register button to finish the process.  Your information
+    from @Model.ProviderDisplayName is pre-populated if we were able to retrieve it.
+</p>
+<form id="account" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.Username" class="form-control" autocomplete="email" placeholder="Email address..." />
+        <label asp-for="Input.Username">@Html.DisplayNameFor(m => m.Input.Username)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.Username"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.DisplayName" class="form-control" placeholder="Your name..." />
+        <label asp-for="Input.DisplayName">@Html.DisplayNameFor(m => m.Input.DisplayName)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.DisplayName"></span>
+    </div>
+    <div class="d-flex flex-row justify-content-center my-2">
+        <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+</form>
