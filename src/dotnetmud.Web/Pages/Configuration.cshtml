@@ -1,0 +1,36 @@
+﻿@page
+@using Microsoft.Extensions.Options
+@using dotnetmud.Web.Models
+@model dotnetmud.Web.Pages.ConfigurationModel
+@inject IConfiguration Configuration
+@inject IOptions<ServiceIdentityOptions> IdentityOptions
+@{
+    ViewBag.Title = "Configuration";
+    var config = ((IConfigurationRoot)Configuration).GetDebugView();
+    var options = IdentityOptions.ToJsonString();
+}
+
+<div class="h-100 w-100" style="background: white; color: black;">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab1" data-bs-toggle="tab" data-bs-target="#devConfigContent" type="button" role="tab" aria-controls="devConfigContent" aria-selected="true">Home</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab2" data-bs-toggle="tab" data-bs-target="#devIdentityOptionsContent" type="button" role="tab" aria-controls="devIdentityOptionsContent" aria-selected="false">Identity Options</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="devConfigContent" role="tabpanel" aria-labelledby="tab1">
+                <pre>
+                    @config
+                </pre>
+            </div>
+            <div class="tab-pane fade" id="devIdentityOptionsContent" role="tabpanel" aria-labelledby="tab2">
+                <pre>
+                    @options
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>

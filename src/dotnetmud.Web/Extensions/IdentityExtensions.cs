@@ -1,5 +1,7 @@
 ﻿#pragma warning disable IDE0130 // Namespace does not match folder structure
 
+using dotnetmud.Web.Models;
+
 namespace Microsoft.AspNetCore.Identity;
 
 /// <summary>
@@ -7,6 +9,37 @@ namespace Microsoft.AspNetCore.Identity;
 /// </summary>
 public static class IdentityExtensions
 {
+    /// <summary>
+    /// Binds the identity options from the configuration.
+    /// </summary>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>The <see cref="ServiceIdentityOptions"/></returns>
+    public static ServiceIdentityOptions BindIdentityOptions(this IConfiguration configuration, string sectionName)
+    {
+        ServiceIdentityOptions options = new();
+        IConfiguration identityConfiguration = configuration.GetSection(sectionName);
+        identityConfiguration.GetSection("Password").Bind(options.Password);
+        identityConfiguration.GetSection("Lockout").Bind(options.Lockout);
+
+        // Misc settings
+        if (identityConfiguration[nameof(options.DefaultAdministratorEmail)] is string adminEmail)
+        {
+            options.DefaultAdministratorEmail = adminEmail;
+        }
+
+        if (identityConfiguration[nameof(options.DefaultAdministratorPassword)] is string adminPassword)
+        {
+            options.DefaultAdministratorPassword = adminPassword;
+        }
+
+        if (identityConfiguration[nameof(options.EnableLockout)] is string enableLockout)
+        {
+            options.EnableLockout = enableLockout.Equals("true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        return options;
+    }
+
     /// <summary>
     /// Copies the values from one <see cref="LockoutOptions"/> instance to another.
     /// </summary>

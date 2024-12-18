@@ -40,4 +40,29 @@
         background: black;
         color: white;
     }
+
+    .provider-list {
+        .provider-icon {
+            font-size: 1.4rem;
+            text-decoration: none;
+
+            .auth-Microsoft {
+                &::before {
+                    content: "\f65d";
+                }
+            }
+
+            .auth-Google {
+                &::before {
+                    content: "\f3f0";
+                }
+            }
+
+            .auth-Facebook {
+                &::before {
+                    content: "\f344";
+                }
+            }
+        }
+    }
 }

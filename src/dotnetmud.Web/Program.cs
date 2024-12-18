@@ -3,6 +3,7 @@ using dotnetmud.Web.Database.Models;
 using dotnetmud.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 /*********************************************************************
 ** Configuration
@@ -26,7 +27,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddScoped<IDatabaseCreator, DatabaseCreator>();
 
-var identityOptions = builder.Services.BindOptions<ServiceIdentityOptions>(builder.Configuration.GetSection("Identity"));
+
+var identityOptions = builder.Configuration.BindIdentityOptions("Identity:Options");
+builder.Services.AddSingleton(Options.Create(identityOptions));
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {

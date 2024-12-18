@@ -38,3 +38,17 @@
     <button type="submit" class="btn btn-primary w-100">Sign in</button>
 </form>
 
+@if (Model.ExternalProviders.Any())
+{
+    <hr />
+    <div class="container text-center provider-list">
+        <h5 class="text-gray-800 mb-1">Sign in with a social provider</h5>
+        @foreach (var scheme in Model.ExternalProviders.OrderBy(x => x.Name))
+        {
+            <a asp-page="/Account/ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" asp-route-provider="@scheme.Name" class="text-primary provider-icon mx-2">
+                <i class="bi auth-@scheme.Name"></i>
+            </a>
+        }
+    </div>
+}
+
