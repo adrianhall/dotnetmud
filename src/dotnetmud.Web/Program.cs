@@ -41,6 +41,11 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthentication()
+    .AddFacebookOAuthProvider(builder.Configuration.GetSection("Identity:Providers:Facebook"))
+    .AddGoogleOAuthProvider(builder.Configuration.GetSection("Identity:Providers:Google"))
+    .AddMicrosoftOAuthProvider(builder.Configuration.GetSection("Identity:Providers:Microsoft"));
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddScoped<IEmailProvider, NullEmailProvider>();
@@ -84,7 +89,7 @@ app.UseHttpsRedirection();
 app.UseWebOptimizer();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 /*********************************************************************

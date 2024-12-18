@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE0130 // Namespace does not match folder structure
 
 using dotnetmud.Web.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microsoft.AspNetCore.Identity;
 
@@ -9,6 +10,66 @@ namespace Microsoft.AspNetCore.Identity;
 /// </summary>
 public static class IdentityExtensions
 {
+    /// <summary>
+    /// Extension method to add the Facebook OAuth provider to the authentication builder if the configuration exists.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The configuration for the provider.</param>
+    /// <returns>The authentication builder, for chaining.</returns>
+    public static AuthenticationBuilder AddFacebookOAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
+    {
+        OAuthProviderOptions options = configuration.BindWithDefaults<OAuthProviderOptions>();
+        if (options.Enabled)
+        {
+            builder.AddFacebook(cfg =>
+            {
+                cfg.ClientId = options.ClientId;
+                cfg.ClientSecret = options.ClientSecret;
+            });
+        }
+        return builder;
+    }
+
+    /// <summary>
+    /// Extension method to add the Google OAuth provider to the authentication builder if the configuration exists.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The configuration for the provider.</param>
+    /// <returns>The authentication builder, for chaining.</returns>
+    public static AuthenticationBuilder AddGoogleOAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
+    {
+        OAuthProviderOptions options = configuration.BindWithDefaults<OAuthProviderOptions>();
+        if (options.Enabled)
+        {
+            builder.AddGoogle(cfg =>
+            {
+                cfg.ClientId = options.ClientId;
+                cfg.ClientSecret = options.ClientSecret;
+            });
+        }
+        return builder;
+    }
+
+    /// <summary>
+    /// Extension method to add the Microsoft Account OAuth provider to the authentication builder if the configuration exists.
+    /// </summary>
+    /// <param name="builder">The authentication builder.</param>
+    /// <param name="configuration">The configuration for the provider.</param>
+    /// <returns>The authentication builder, for chaining.</returns>
+    public static AuthenticationBuilder AddMicrosoftOAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
+    {
+        OAuthProviderOptions options = configuration.BindWithDefaults<OAuthProviderOptions>();
+        if (options.Enabled)
+        {
+            builder.AddMicrosoftAccount(cfg =>
+            {
+                cfg.ClientId = options.ClientId;
+                cfg.ClientSecret = options.ClientSecret;
+            });
+        }
+        return builder;
+    }
+
     /// <summary>
     /// Binds the identity options from the configuration.
     /// </summary>
