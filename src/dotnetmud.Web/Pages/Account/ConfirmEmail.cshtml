@@ -1,0 +1,18 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Email Confirmation";
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Email Confirmation</h4>
+</div>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+@if (Model.DisplayIndexLink) 
+{
+    <div class="text-center">
+        <a asp-page="/Index" class="btn btn-primary btn-lg mx-2 my-2">Return to the home page</a>
+    </div>
+}

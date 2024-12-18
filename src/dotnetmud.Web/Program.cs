@@ -1,6 +1,7 @@
 using dotnetmud.Web.Database;
 using dotnetmud.Web.Database.Models;
 using dotnetmud.Web.Models;
+using dotnetmud.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -39,6 +40,17 @@ builder.Services
     })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<IEmailProvider, NullEmailProvider>();
+}
+else
+{
+    builder.Services.AddScoped<IEmailProvider, MailerSendEmailProvider>();
+}
+builder.Services.AddScoped<IViewRenderingService, ViewRenderingService>();
+builder.Services.AddScoped<IEmailSender<ApplicationUser>, DefaultEmailSender>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddJsEngine();

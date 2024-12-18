@@ -1,0 +1,13 @@
+﻿@using dotnetmud.Web.Services.Email
+@model SendLinkViewModel
+@{
+    Layout = null;
+}
+
+You must confirm your account before you can log in to dotnetmud.  Copy/paste or click on the link below:
+
+@Model.Link
+
+This link will expire in 24 hours.  If you did not request this link, please ignore this email.
+
+This email was sent to @Model.DisplayName - @Model.Email.

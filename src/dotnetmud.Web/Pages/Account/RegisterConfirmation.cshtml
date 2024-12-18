@@ -1,0 +1,23 @@
+﻿@page
+@inject IWebHostEnvironment Environment
+@model RegisterConfirmationModel
+@{
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Check your email!</h4>
+</div>
+<p>
+    We've sent you an email with a link to confirm your email address.  Please check your email and click the link to complete the registration process.
+</p>
+@if (Environment.IsDevelopment())
+{
+    <div class="text-center">
+        <h4 class="text-gray-800 mb-4">DEVELOPMENT MODE</h4>
+    </div>
+    <p>
+        When running in development mode, emails are not sent.  Check the logs for the confirmation link.
+    </p>
+}
+

@@ -10,7 +10,7 @@ public class ServiceIdentityOptions
     /// <summary>
     /// The default administrator email address.
     /// </summary>
-    public string DefaultAdministratorEmail { get; set; } = "admin@aspire.mud";
+    public string DefaultAdministratorEmail { get; set; } = "admin@dotnet.mud";
 
     /// <summary>
     /// The default administrator password - if not set, a password will be generated.

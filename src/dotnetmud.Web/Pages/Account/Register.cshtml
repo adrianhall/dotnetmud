@@ -1,0 +1,41 @@
+﻿@page
+@model RegisterModel
+@{
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Create an account</h4>
+</div>
+<form id="account" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.Username" class="form-control" placeholder="Email address..." />
+        <label asp-for="Input.Username">@Html.DisplayNameFor(m => m.Input.Username)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.Username"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.DisplayName" class="form-control" placeholder="Your name..." />
+        <label asp-for="Input.DisplayName">@Html.DisplayNameFor(m => m.Input.DisplayName)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.Username"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.Password" class="form-control" placeholder="Password..." />
+        <label asp-for="Input.Password">@Html.DisplayNameFor(m => m.Input.Password)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm password..." />
+        <label asp-for="Input.ConfirmPassword">@Html.DisplayNameFor(m => m.Input.ConfirmPassword)</label>
+    </div>
+    <div class="invalid-feedback">
+        <span asp-validation-for="Input.ConfirmPassword"></span>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Register</button>
+</form>
