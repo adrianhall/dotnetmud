@@ -11,16 +11,16 @@
 }
 
 <div class="wrapper">
-    <div class="panel">
+    <div class="transparentpanel">
         @if (SignInManager.IsSignedIn(User))
         {
-            <a asp-page="/Game/Index" class="btn btn-primary btn-large mx-2 my-2">
+            <a asp-page="/Game/Index" class="fantasy-btn-3xl fantasy-bone-n-copper">
                 Enter the game
             </a>
         }
         else
         {
-            <a asp-page="/Account/Login" class="btn btn-primary btn-lg mx-2 my-2">
+            <a asp-page="/Account/Login" class="fantasy-btn-3xl fantasy-bone-n-copper">
                 Sign in
             </a>
         }
