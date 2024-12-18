@@ -1,6 +1,7 @@
 using dotnetmud.Web.Database.Models;
 using dotnetmud.Web.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace dotnetmud.Web.Pages.Account;
 
+[AllowAnonymous]
 public class LoginModel(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,

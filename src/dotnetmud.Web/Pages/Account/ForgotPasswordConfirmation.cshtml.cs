@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace dotnetmud.Web.Pages.Account;
 
 [AllowAnonymous]
-public class LockoutModel : PageModel
+public class ForgotPasswordConfirmationModel : PageModel
 {
     public void OnGet()
     {
