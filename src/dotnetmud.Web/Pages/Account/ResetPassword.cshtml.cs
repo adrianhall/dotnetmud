@@ -1,4 +1,5 @@
 using dotnetmud.Web.Database.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace dotnetmud.Web.Pages.Account;
 
+[AllowAnonymous]
 public class ResetPasswordModel(
     UserManager<ApplicationUser> userManager,
     ILogger<ResetPasswordModel> logger

@@ -11,6 +11,7 @@ namespace dotnetmud.Web.Pages.Account;
 
 [Authorize]
 public class ProfileModel(
+    SignInManager<ApplicationUser> signInManager,
     UserManager<ApplicationUser> userManager,
     ILogger<ProfileModel> logger
     ) : PageModel
@@ -40,18 +41,11 @@ public class ProfileModel(
     {
         logger.LogTrace("OnGetAsync");
 
-        string? username = User.Identity?.Name;
-        if (string.IsNullOrEmpty(username))
-        {
-            logger.LogDebug("Cannot determine username - user may have bad authentication.");
-            return RedirectToPage("./Status", new { Message = "Cannot determine username - user may have bad authentication." });
-        }
-
-        var user = await userManager.FindUserAsync(username); 
+        var user = await userManager.GetUserAsync(User); 
         if (user is null)
         {
-            logger.LogDebug("User {username} is authenticated, but not found in the database.", username);
-            await HttpContext.SignOutAsync();
+            logger.LogDebug("User {username} is authenticated, but not found in the database.", User.Identity?.Name);
+            await signInManager.SignOutAsync();
             return RedirectToPage("/Index");
         }
 
@@ -63,18 +57,11 @@ public class ProfileModel(
     {
         logger.LogTrace("OnPostAsync model={model}", Input.ToJsonString());
 
-        string? username = User.Identity?.Name;
-        if (string.IsNullOrEmpty(username))
-        {
-            logger.LogDebug("Cannot determine username - user may have bad authentication.");
-            return RedirectToPage("./Status", new { Message = "Cannot determine username - user may have bad authentication." });
-        }
-
-        var user = await userManager.FindUserAsync(username);
+        var user = await userManager.GetUserAsync(User);
         if (user is null)
         {
-            logger.LogDebug("User {username} is authenticated, but not found in the database.", username);
-            await HttpContext.SignOutAsync();
+            logger.LogDebug("User {username} is authenticated, but not found in the database.", User.Identity?.Name);
+            await signInManager.SignOutAsync();
             return RedirectToPage("/Index");
         }
 
@@ -87,7 +74,7 @@ public class ProfileModel(
         var result = await userManager.UpdateAsync(user);
         if (result.Succeeded)
         {
-            logger.LogInformation("Updated user {username} with new display name {displayName}.", username, user.DisplayName);
+            logger.LogInformation("Updated user {username} with new display name {displayName}.", user.UserName, user.DisplayName);
             return RedirectToPage("/Index");
         }
 

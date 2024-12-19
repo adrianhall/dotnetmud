@@ -24,13 +24,15 @@
     <div class="invalid-feedback">
         <span asp-validation-for="Input.DisplayName"></span>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Make changes</button>
+    <div class="d-flex flex-row justify-content-around my-2">
+        <button type="submit" class="btn btn-primary">Make changes</button>
+    </div>
 </form>
 <hr />
 <div class="d-flex flex-row justify-content-around w-100 my-2">
     <a asp-page="/Account/ChangePassword" class="btn btn-warning">Change password</a>
     @if (!User.IsInRole(AppRoles.Administrator))
     {
-        <a asp-page="/Account/DeleteAccount" class="btn btn-error">Delete account</a>
+        <a asp-page="/Account/DeleteAccount" class="btn btn-danger">Delete account</a>
     }
 </div>

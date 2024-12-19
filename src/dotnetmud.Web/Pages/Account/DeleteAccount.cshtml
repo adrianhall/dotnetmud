@@ -1,0 +1,42 @@
+﻿@page
+@model DeleteAccountModel
+@{
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center">
+    <h4 class="text-gray-800 mb-4">Delete account</h4>
+    <p class="my-3">
+        Are you sure you want to delete your account? This action cannot be undone.
+    </p>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+        Delete account
+    </button>
+</div>
+
+@section Scripts {
+    <!-- Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">NO TURNING BACK!!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center my-2">
+                        Are you sure you want to delete your account?
+                    </div>
+                    <div class="text-center my-2">
+                        Email Address: @User.Identity?.Name
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form method="post">
+                        <button type="submit" class="btn btn-danger">Yes!  Delete my account!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

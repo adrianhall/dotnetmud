@@ -69,8 +69,9 @@ public class LoginModel(
             ModelState.AddModelError(string.Empty, ErrorMessage);
         }
 
-        // Clear the existing external cookie to ensure a clean login process
+        // Ensure we are signed out to ensure a clean experience.
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        await signInManager.SignOutAsync();
     }
 
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
