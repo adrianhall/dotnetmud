@@ -1,5 +1,7 @@
 ﻿#pragma warning disable IDE0130 // Namespace does not match folder structure
 
+using System.Text;
+
 namespace Microsoft.Extensions.Configuration;
 
 /// <summary>
@@ -33,5 +35,58 @@ public static class ConfigurationExtensions
         defaultValue ??= Activator.CreateInstance<T>();
         configuration.Bind(defaultValue);
         return defaultValue;
+    }
+
+    /// <summary>
+    /// A better GetDebugView() method that excludes the values of environment variables optionally.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <returns></returns>
+    public static string GetDebugHtmlView(this IConfigurationRoot root, bool includeEnvironment = true)
+    {
+        void RecurseChildren(StringBuilder stringBuilder, IEnumerable<IConfigurationSection> children, string indent)
+        {
+            stringBuilder.AppendLine("<ul class=\"aspnetcore-configuration\">");
+            foreach (IConfigurationSection child in children)
+            {
+                (string? value, IConfigurationProvider? provider) = GetValueAndProvider(root, child.Path);
+
+                if (!includeEnvironment && (provider?.ToString()?.StartsWith("Environment") ?? false))
+                {
+                    continue;
+                }
+
+                if (provider is not null)
+                {
+                    stringBuilder.AppendLine($"<li>{indent}<span class=\"key\">{child.Key}</span>=<span class=\"value\">{value}</span> <span class=\"provider\">({provider})</span></li>");
+
+                }
+                else if (!string.IsNullOrEmpty(child.Key))
+                {
+                    string childvalue = string.IsNullOrEmpty(child.Value) ? "" : $"=<span class=\"value\">{child.Value}</span>";
+                    stringBuilder.AppendLine($"<li>{indent}<span class=\"key\">{child.Key}</span>{childvalue}</li>");
+                }
+
+                RecurseChildren(stringBuilder, child.GetChildren(), indent + "  ");
+            }
+            stringBuilder.AppendLine("</ul>");
+        }
+
+        var builder = new StringBuilder();
+        RecurseChildren(builder, root.GetChildren(), "");
+        return builder.ToString();
+    }
+
+    private static (string? Value, IConfigurationProvider? Provider) GetValueAndProvider(IConfigurationRoot root, string key)
+    {
+        foreach (IConfigurationProvider provider in root.Providers.Reverse())
+        {
+            if (provider.TryGet(key, out string? value))
+            {
+                return (value, provider);
+            }
+        }
+
+        return (null, null);
     }
 }

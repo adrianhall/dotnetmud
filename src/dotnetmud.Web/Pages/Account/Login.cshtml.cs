@@ -121,6 +121,10 @@ public class LoginModel(
     internal async Task SetRequiredPropertiesAsync(string? returnUrl)
     {
         ReturnUrl = returnUrl ?? Url.Content("~/");
+        if (ReturnUrl == "/Account/Logout")
+        {
+            ReturnUrl = Url.Content("~/");
+        }
         ExternalProviders = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 }
