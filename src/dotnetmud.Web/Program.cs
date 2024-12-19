@@ -67,6 +67,7 @@ builder.Services.AddWebOptimizer(pipeline =>
     }
 });
 builder.Services.AddRazorPages();
+builder.Services.AddDataTables();
 
 /*********************************************************************
 ** Initialization
