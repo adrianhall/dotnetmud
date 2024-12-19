@@ -52,12 +52,7 @@
 @import "./buttons";
 
 // Stylesheets for each layout
+@import "./layouts/developer";
 @import "./layouts/home";
 @import "./layouts/account";
-
-.tab-content {
-    border-left: var(--bs-border-width) solid var(--bs-border-color);
-    border-right: var(--bs-border-width) solid var(--bs-border-color);
-    padding-left: 4px;
-    padding-right: 4px;
-}
+@import "./layouts/admin";

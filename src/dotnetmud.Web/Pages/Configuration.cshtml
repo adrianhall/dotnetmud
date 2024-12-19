@@ -6,6 +6,7 @@
 @inject IOptions<ServiceIdentityOptions> IdentityOptions
 @{
     ViewBag.Title = "Configuration";
+    ViewBag.BodyClass = "layout--developer";
     var config = ((IConfigurationRoot)Configuration).GetDebugHtmlView(false);
     var options = IdentityOptions.ToJsonString();
     var env = Environment.GetEnvironmentVariables().GetDebugHtmlView(envExclusions: true);

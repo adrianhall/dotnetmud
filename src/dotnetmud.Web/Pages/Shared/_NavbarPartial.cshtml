@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using dotnetmud.Web.Database.Models
+@using dotnetmud.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IWebHostEnvironment env
+@{
+    bool isSignedIn = SignInManager.IsSignedIn(User);
+    bool isAdministrator = User.IsInRole(AppRoles.Administrator);
+}
+
+<header class="bg-dark-subtle">
+    <div class="container">
+        <nav>
+            <ul class="me-auto mb-2 mb-lg-0">
+                <li class="nav-item app-brand">
+                    <a class="navbar-brand" asp-page="/Home">
+                        <img src="~/img/brand.svg" alt="Logo" width="40" height="40" class="d-inline-block">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link app-title" asp-page="/Home">DotNetMud</a>
+                </li>
+                @if (isAdministrator)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/Admin/Users">Users</a>
+                    </li>
+                }
+                @if (isSignedIn)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Play Game</a>
+                    </li>
+                }
+                @if (env.IsDevelopment())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/Configuration">Developer</a>
+                    </li>
+                }
+            </ul>
+            <partial name="_LoginPartial" />
+        </nav>
+    </div>
+</header>
