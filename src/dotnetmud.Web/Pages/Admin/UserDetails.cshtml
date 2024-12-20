@@ -16,7 +16,7 @@
         <div class="col-lg-6 col-12">
             <h5 class="text-gray-800 mb-4">User Details</h5>
 
-            <form method="post">
+            <form method="post" asp-page-handler="UpdateUser">
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" readonly placeholder="Email address..." />
@@ -62,7 +62,7 @@
 
 
                 <div class="d-flex flex-row justify-content-start my-2">
-                    <button type="button" class="btn btn-primary">Update User</button>
+                    <button type="submit" class="btn btn-primary">Update User</button>
                 </div>
             </form>
         </div>

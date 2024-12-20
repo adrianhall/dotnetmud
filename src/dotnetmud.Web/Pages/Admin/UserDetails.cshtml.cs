@@ -72,12 +72,7 @@ public class UserDetailsModel(
     public async Task<IActionResult> OnGetAsync(string id)
     {
         logger.LogTrace("OnGetAsync id={id}", id ?? "null");
-        if (string.IsNullOrEmpty(id))
-        {
-            return NotFound();
-        }
-
-        var user = await userManager.FindByIdAsync(id);
+        var user = await GetUserByIdAsync(id);
         if (user is null)
         {
             return NotFound();
@@ -99,15 +94,79 @@ public class UserDetailsModel(
         return Page();
     }
 
-    public async Task<IActionResult> OnPostUnlockAccountAsync(string id)
+    public async Task<IActionResult> OnPostUpdateUserAsync(string id)
     {
-        logger.LogTrace("OnPostUnlockAccountAsync id={id}", id ?? "null");
-        if (string.IsNullOrEmpty(id))
+        logger.LogTrace("OnPostAsync id={id} model={model}", id ?? "null", Input.ToJsonString());
+        logger.LogTrace("SelectedRoles={SelectedRoles}", string.Join(",", SelectedRoles));
+        var user = await GetUserByIdAsync(id);
+        if (user is null)
         {
             return NotFound();
         }
 
-        var user = await userManager.FindByIdAsync(id);
+        IsCurrentUser = user.Id == userManager.GetUserId(User);
+        AvailableRoles = await roleManager.Roles.OrderBy(r => r.Name).Select(r => r.Name!).ToListAsync();
+
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        if (!SelectedRoles.Contains(AppRoles.Administrator) && user.Id == userManager.GetUserId(User))
+        {
+            StatusMessage = "You cannot remove Administrator role from yourself.";
+            return RedirectToPage(new { id });
+        }
+
+        bool userIsChanged = false;
+        List<string> messages = [];
+        if (user.DisplayName != Input.DisplayName)
+        {
+            user.DisplayName = Input.DisplayName;
+            messages.Add("Display name updated.");
+            userIsChanged = true;
+        }
+
+        if (user.EmailConfirmed != Input.EmailConfirmed)
+        {
+            user.EmailConfirmed = Input.EmailConfirmed;
+            messages.Add("Email confirmed status updated.");
+            userIsChanged = true;
+        }
+
+        if (userIsChanged)
+        {
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                StatusMessage = "Failed to update user: " + string.Join("<br/>\n", result.Errors.Select(x => x.Description));
+                return RedirectToPage(new { id });
+            }
+        }
+
+        foreach (var role in AvailableRoles)
+        {
+            if (SelectedRoles.Contains(role) && !Input.Roles.Contains(role))
+            {
+                messages.Add($"Added role {role}");
+                await userManager.AddToRoleAsync(user, role);
+            }
+
+            if (!SelectedRoles.Contains(role) && Input.Roles.Contains(role))
+            {
+                messages.Add($"Removed role {role}");
+                await userManager.RemoveFromRoleAsync(user, role);
+            }
+        }
+
+        StatusMessage = messages.Count != 0 ? string.Join("<br/>\n", messages) : "No changes made.";
+        return RedirectToPage(new { id });
+    }
+
+    public async Task<IActionResult> OnPostUnlockAccountAsync(string id)
+    {
+        logger.LogTrace("OnPostUnlockAccountAsync id={id}", id ?? "null");
+        var user = await GetUserByIdAsync(id);
         if (user is null)
         {
             return NotFound();
@@ -123,12 +182,7 @@ public class UserDetailsModel(
     public async Task<IActionResult> OnPostDeleteAccountAsync(string id)
     {
         logger.LogTrace("OnPostUnlockAccountAsync id={id}", id ?? "null");
-        if (string.IsNullOrEmpty(id))
-        {
-            return NotFound();
-        }
-
-        var user = await userManager.FindByIdAsync(id);
+        var user = await GetUserByIdAsync(id);
         if (user is null)
         {
             return NotFound();
@@ -152,4 +206,7 @@ public class UserDetailsModel(
             return RedirectToPage(new { id });
         }
     }
+
+    private async Task<ApplicationUser?> GetUserByIdAsync(string? id)
+        => string.IsNullOrEmpty(id) ? null : await userManager.FindByIdAsync(id);
 }
