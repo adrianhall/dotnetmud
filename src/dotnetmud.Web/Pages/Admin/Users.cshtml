@@ -5,12 +5,36 @@
     Layout = "_AdminLayout";
 }
 
-<div class="container">
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="text-center my-2">
+        <partial name="_StatusMessage" model="@Model.StatusMessage" />
+    </div>
+}
+
+<div class="container my-3">
     <h4 class="text-gray-800 mb-4">Users</h4>
     <div class="row">
         <div class="col-12">
             <table id="usersTable" class="table table-striped" style="width:100%">
-                
+                <thead>
+                    <tr>
+                        <th data-name="Id">User ID</th>
+                        <th data-name="EmailAddress">Email Address</th>
+                        <th data-name="DisplayName">Display Name</th>
+                        <th data-name="Roles">Roles</th>
+                        <th data-name="EmailConfirmed">Confirmed?</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Email Address</th>
+                        <th>Display Name</th>
+                        <th>Roles</th>
+                        <th>Confirmed?</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -18,6 +42,9 @@
 
 @section Stylesheets {
     <link rel="stylesheet" href="~/lib/datatables.net-bs5/datatables.bootstrap5.min.css" />
+    <style>
+        #usersTable tbody tr { cursor: pointer; }
+    </style>
 }
 
 @section Scripts {
@@ -25,6 +52,16 @@
     <script src="~/lib/datatables.net-bs5/datatables.bootstrap5.min.js"></script>
     <script>
     $(document).ready(function () {
+        const userDetailsUriTemplate = '@Url.Page("/Admin/UserDetails", new { id = "__ID__" })';
+
+        const booleanRenderer = (data, type, row, meta) => {
+            if (data === true) {
+                return '<i class="bi bi-check-lg text-success"></i>';
+            } else {
+                return '<i class="bi bi-x-lg text-danger"></i>';
+            }
+        };
+
         const tableOptions = {
             ajax: {
                 url: '/Admin/Users',
@@ -33,11 +70,32 @@
                     RequestVerificationToken: $('@Html.AntiForgeryToken()').val()
                 }
             },
+            columnDefs: [
+                { targets: [1, 2, 4], searchable: true,  orderable: true  },
+                { targets: [0, 3],    searchable: false, orderable: false },
+                { targets: [4], className: 'dt-center', render: booleanRenderer }
+            ],
+            columns: [
+                { name: 'Id', data: 'id' },
+                { name: 'EmailAddress', data: 'emailAddress' },
+                { name: 'DisplayName', data: 'displayName' },
+                { name: 'Roles', data: 'roles' },
+                { name: 'EmailConfirmed', data: 'emailConfirmed' }
+            ],
             processing: true,
             serverSide: true
         };
 
-        $('#usersTable').DataTable(tableOptions);
+        const table = $('#usersTable').DataTable(tableOptions);
+        table.on('click', 'tbody td', (evt) => {
+            evt.preventDefault();
+            let tr = evt.target.closest('tr');
+            let row = table.row(tr).data();
+            console.log(`Clicked on row ${row.id}`);
+            let userDetailsUrl = userDetailsUriTemplate.replace("__ID__", row.id);
+            console.log(`URI = ${userDetailsUrl}`);
+            window.location.href = userDetailsUrl;
+        });
     });
     </script>
 }

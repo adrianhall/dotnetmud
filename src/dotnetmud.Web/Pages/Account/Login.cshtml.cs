@@ -95,6 +95,8 @@ public class LoginModel(
         if (result.Succeeded)
         {
             logger.LogInformation("User logged in.");
+            userRecord.LastLogin = DateTimeOffset.UtcNow;
+            await userManager.UpdateAsync(userRecord);
             return LocalRedirect(ReturnUrl);
         }
 

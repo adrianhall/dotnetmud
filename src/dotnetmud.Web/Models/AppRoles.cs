@@ -11,7 +11,12 @@ public static class AppRoles
     public const string Administrator = "administrator";
 
     /// <summary>
+    /// Has the ability to edit zones.
+    /// </summary>
+    public const string ZoneEditor = "zone_editor";
+
+    /// <summary>
     /// The list of all roles (for creation).
     /// </summary>
-    public static readonly IEnumerable<string> AllRoles = [Administrator ];
+    public static readonly IEnumerable<string> AllRoles = [Administrator, ZoneEditor];
 }

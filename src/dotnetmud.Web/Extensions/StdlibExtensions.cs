@@ -3,12 +3,13 @@ using System.Collections;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 
 namespace dotnetmud.Web;
 
-public static class StdlibExtensions
+public static partial class StdlibExtensions
 {
     private static readonly Lazy<JsonSerializerOptions> SerializerOptions = new(GetJsonSerializerOptions);
 
@@ -51,6 +52,22 @@ public static class StdlibExtensions
         => obj is null ? "null" : JsonSerializer.Serialize(obj, SerializerOptions.Value);
 
     /// <summary>
+    /// Converts a string to PascalCase.
+    /// </summary>
+    /// <param name="s">The string to convert.</param>
+    /// <returns>The converted string.</returns>
+    public static string ToPascalCase(this string s)
+    {
+        var matcher = PascalCaseWordMatcher().Match(s);
+        var sb = new StringBuilder();
+        foreach (var capture in matcher.Groups["word"].Captures.Cast<Capture>())
+        {
+            sb.Append(Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(capture.Value.ToLower()));
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
     /// Returns the JSON serializer options for logging purposes.
     /// </summary>
     public static JsonSerializerOptions GetJsonSerializerOptions()
@@ -61,4 +78,7 @@ public static class StdlibExtensions
             WriteIndented = true
         };
     }
+
+    [GeneratedRegex("^(?<word>^[a-z]+|[A-Z]+|[A-Z][a-z]+)+$")]
+    private static partial Regex PascalCaseWordMatcher();
 }

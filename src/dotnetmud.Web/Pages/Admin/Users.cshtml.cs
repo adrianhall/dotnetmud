@@ -17,12 +17,34 @@ public class UsersModel(
     ) : PageModel
 {
     [BindProperty]
-    public IDataTablesRequest? DataTablesRequest { get; set; } 
+    public IDataTablesRequest? DataTablesRequest { get; set; }
 
+    [TempData]
+    public string? StatusMessage { get; set; }
+
+    /// <summary>
+    /// The field mapping for the datatables.net API.
+    /// </summary>
+    private readonly Dictionary<string, string> fieldMapping = new()
+    {
+        ["id"] = "Id",
+        ["emailAddress"] = "Email",
+        ["emailConfirmed"] = "EmailConfirmed",
+        ["displayName"] = "DisplayName",
+        ["roles"] = "Roles"
+    };
+
+    /// <summary>
+    /// Displays the users table HTML.
+    /// </summary>
     public void OnGet()
     {
     }
 
+    /// <summary>
+    /// Handler for the datatables.net API AJAX request.
+    /// </summary>
+    /// <returns>A datatables.net result response.</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         logger.LogTrace("OnPostAsync model={model}", DataTablesRequest.ToJsonString());
@@ -35,7 +57,7 @@ public class UsersModel(
         IQueryable<ApplicationUser> queryable = userManager.Users;
         IQueryable<ApplicationUser> filteredUsers = queryable.GlobalFilterBy(DataTablesRequest.Search, DataTablesRequest.Columns);
         List<ApplicationUser> pagedUsers = await filteredUsers
-            .SortBy(DataTablesRequest.Columns ?? [])
+            .SortBy(DataTablesRequest.Columns ?? [], fieldMapping)
             .GetPage(DataTablesRequest)
             .ToListAsync();
         int totalCount = await queryable.CountAsync();
@@ -50,10 +72,14 @@ public class UsersModel(
         return new DataTablesJsonResult(response);
     }
 
+    /// <summary>
+    /// The model class for the results that the datatables.net reader requires.
+    /// </summary>
+    /// <param name="user"></param>
     public class ResultModel(ApplicationUser user)
     {
         public string Id { get; set; } = user.Id;
-        public string UserName { get; set; } = user.UserName!;
+        public string EmailAddress { get; set; } = user.Email!;
         public bool EmailConfirmed { get; set; } = user.EmailConfirmed;
         public string DisplayName { get; set; } = user.DisplayName;
         public string Roles { get; set; } = string.Empty;

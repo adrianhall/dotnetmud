@@ -1,5 +1,6 @@
 ﻿using DataTables.AspNet.AspNetCore;
 using DataTables.AspNet.Core;
+using dotnetmud.Web;
 using System.Linq.Expressions;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -68,7 +69,7 @@ public static class DataTablesExtensions
     }
 
 
-    public static IQueryable<T> SortBy<T>(this IQueryable<T> source, IEnumerable<IColumn> columns)
+    public static IQueryable<T> SortBy<T>(this IQueryable<T> source, IEnumerable<IColumn> columns, IDictionary<string, string> mapping)
     {
         Expression expression = source.Expression;
         bool firstTime = true;
@@ -78,7 +79,8 @@ public static class DataTablesExtensions
         foreach (var sortedColumn in sortedColumns)
         {
             var parameter = Expression.Parameter(typeof(T), "x");
-            var selector = Expression.PropertyOrField(parameter, sortedColumn.Field);
+            string fieldName = mapping[sortedColumn.Field];
+            var selector = Expression.PropertyOrField(parameter, fieldName);
             var lambda = Expression.Lambda(selector, parameter);
             var method = sortedColumn.Sort.Direction == SortDirection.Descending
                 ? firstTime ? "OrderByDescending" : "ThenByDescending"
